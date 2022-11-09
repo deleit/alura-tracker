@@ -14,12 +14,12 @@
                         tarefas
                     </RouterLink>
                 </li>
-                <!-- <li>
+                <li>
                     <RouterLink to="/projetos" class="link">
                         <i class="fas fa-project-diagram" />
                         projetos
                     </RouterLink>
-                </li> -->
+                </li>
             </ul>
         </nav>
     </header>
