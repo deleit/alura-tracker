@@ -24,6 +24,11 @@
                                 <i class="fas fa-pencil-alt"></i>
                             </span>
                         </router-link>
+                        <button class="button ml-2 is-danger" @click="excluir(projeto.id)">
+                            <span class="icon is-small">
+                                <i class="fas fa-trash"></i>
+                            </span>
+                        </button>
                     </td>
                 </tr>
             </tbody>
@@ -36,16 +41,23 @@ import { defineComponent } from 'vue';
 import { useStore } from '@/store';
 import { computed } from '@vue/reactivity';
 import { RouterLink } from 'vue-router';
+import { EXCLUIR_PROJETO } from '@/store/tipo-mutacoes';
 
 export default defineComponent({
     name: 'Lista',
     components: {
         RouterLink
-    }, 
+    },
+    methods: {
+        excluir (id: string) {
+            this.store.commit(EXCLUIR_PROJETO, id);
+        }
+    },
     setup () {
         const store = useStore();
         return {
-            projetos: computed(() => store.state.projetos)
+            projetos: computed(() => store.state.projetos),
+            store
         }
     }
 });
