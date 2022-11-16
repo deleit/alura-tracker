@@ -26,14 +26,18 @@
             </div>
 
             <div class="column">
-                <Temporizador @aoTemporizadorFinalizado="finalizarTarefa"/>
+                <Temporizador 
+                    @aoTemporizadorFinalizado="finalizarTarefa"
+                />
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
+import { TipoNotificacao } from '@/interfaces/INotificacao';
 import { key } from '@/store';
+import { NOTIFICAR } from '@/store/tipo-mutacoes';
 import { computed } from '@vue/reactivity';
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
@@ -53,18 +57,28 @@ export default defineComponent({
     },
     methods: {
         finalizarTarefa (tempoDecorrido: number) : void {
-            this.$emit('aoSalvarTarefa', {
-                duracaoEmSegundos: tempoDecorrido,
-                descricao: this.descricao,
-                projeto: this.projetos.find(proj => proj.id == this.idProjeto)
-            });
-            this.descricao = '';
+            const projeto = this.projetos.find((p) => p.id == this.idProjeto);
+            if (projeto) {
+                this.$emit('aoSalvarTarefa', {
+                    duracaoEmSegundos: tempoDecorrido,
+                    descricao: this.descricao,
+                    projeto: this.projetos.find(proj => proj.id == this.idProjeto)
+                });
+                this.descricao = '';
+            } else {
+                this.store.commit(NOTIFICAR, {
+                    titulo: 'Ops!',
+                    texto: 'Selecione um projeto antes de finalizar a tarefa',
+                    tipo: TipoNotificacao.FALHA,
+                });
+            }
         }
     },
     setup () {
         const store = useStore(key);
         return {
-            projetos: computed(() => store.state.projetos)
+            projetos: computed(() => store.state.projetos),
+            store
         }
     }
 })

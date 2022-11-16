@@ -43,9 +43,9 @@
                 this.cronometroRodando = true;
             },
             finalizar () {
-                clearInterval(this.cronometro);
                 this.cronometroRodando = false;
                 this.$emit('aoTemporizadorFinalizado', this.tempoEmSegundos);
+                clearInterval(this.cronometro);
                 this.tempoEmSegundos = 0;
             }
         }
