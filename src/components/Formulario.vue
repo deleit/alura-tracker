@@ -13,7 +13,7 @@
             <div class="column is-3">
                 <div class="select">
                     <select v-model="idProjeto">
-                        <option value="">Selecione o projeto</option>
+                        <option value="" selected disabled>Selecione o projeto</option>
                         <option 
                             v-for="projeto in projetos"
                             :value="projeto.id"
