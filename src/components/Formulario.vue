@@ -28,6 +28,7 @@
             <div class="column">
                 <Temporizador 
                     @aoTemporizadorFinalizado="finalizarTarefa"
+                    :id-projeto="idProjeto"
                 />
             </div>
         </div>

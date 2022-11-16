@@ -41,7 +41,9 @@ import { defineComponent } from 'vue';
 import { useStore } from '@/store';
 import { computed } from '@vue/reactivity';
 import { RouterLink } from 'vue-router';
-import { EXCLUIR_PROJETO } from '@/store/tipo-mutacoes';
+import { OBTER_PROJETOS, REMOVER_PROJETO } from '@/store/tipo-acoes';
+import useNotificador from '@/hooks/notificador';
+import { TipoNotificacao } from '@/interfaces/INotificacao';
 
 export default defineComponent({
     name: 'Lista',
@@ -50,14 +52,22 @@ export default defineComponent({
     },
     methods: {
         excluir (id: string) {
-            this.store.commit(EXCLUIR_PROJETO, id);
+            this.store.dispatch(REMOVER_PROJETO, id)
+                .then(() => this.notificar(
+                    TipoNotificacao.SUCESSO, 
+                    'Excelente!', 
+                    `O projeto foi removido com sucesso!`
+                ));
         }
     },
     setup () {
         const store = useStore();
+        store.dispatch(OBTER_PROJETOS);
+        const { notificar } = useNotificador();
         return {
             projetos: computed(() => store.state.projetos),
-            store
+            store,
+            notificar
         }
     }
 });
