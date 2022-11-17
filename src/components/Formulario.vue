@@ -28,7 +28,6 @@
             <div class="column">
                 <Temporizador 
                     @aoTemporizadorFinalizado="finalizarTarefa"
-                    :id-projeto="idProjeto"
                 />
             </div>
         </div>
@@ -78,7 +77,7 @@ export default defineComponent({
     setup () {
         const store = useStore(key);
         return {
-            projetos: computed(() => store.state.projetos),
+            projetos: computed(() => store.state.projeto.projetos),
             store
         }
     }

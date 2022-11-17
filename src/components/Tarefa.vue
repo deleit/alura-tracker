@@ -1,6 +1,6 @@
 <template>
     <Box>
-        <div class="columns">
+        <div class="columns container">
             <div class="column is-4">
                 {{ tarefa.descricao || 'Tarefa sem descrição' }}
             </div>
@@ -9,6 +9,13 @@
             </div>
             <div class="column">
                 <Cronometro :tempoEmSegundos="tarefa.duracaoEmSegundos" />
+            </div>
+            <div class="column">
+                <div class="button is-info" @click="tarefaClicada">
+                    <span class="icon is-small">
+                        <i class="fas fa-pencil-alt"></i>
+                    </span>
+                </div>
             </div>
         </div>
     </Box>
@@ -22,6 +29,7 @@
 
     export default defineComponent({
         name: 'Tarefa',
+        emits: ['aoTarefaClicada'],
         components: {
             Cronometro,
             Box
@@ -31,6 +39,16 @@
                 type: Object as PropType<ITarefa>,
                 required: true
             }
-        }
+        },
+        methods: {
+            tarefaClicada () : void {
+                this.$emit('aoTarefaClicada', this.tarefa)
+            }
+        },
     });
 </script>
+<style scoped>
+.container {
+    align-items: center;
+}
+</style>

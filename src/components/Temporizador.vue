@@ -2,7 +2,7 @@
     <div class="is-flex is-align-items-center is-justify-content-space-between">
         <Cronometro :tempoEmSegundos="tempoEmSegundos" />
         <Botao 
-            :disabled="cronometroRodando || idProjeto === ''"
+            :disabled="cronometroRodando"
             label="play"
             icon="fas fa-play"
             @clicado="iniciar"
@@ -27,11 +27,6 @@
         components: {
             Cronometro,
             Botao
-        },
-        props: {
-            idProjeto: {
-                type: String
-            }
         },
         data () {
             return {
