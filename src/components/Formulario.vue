@@ -38,7 +38,7 @@
 import { TipoNotificacao } from '@/interfaces/INotificacao';
 import { key } from '@/store';
 import { NOTIFICAR } from '@/store/tipo-mutacoes';
-import { computed } from '@vue/reactivity';
+import { computed, ref } from '@vue/reactivity';
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
 import Temporizador from './Temporizador.vue';
@@ -49,36 +49,35 @@ export default defineComponent({
     components: {
         Temporizador
     },
-    data () {
-        return {
-            descricao: '',
-            idProjeto: '',
-        }
-    },
-    methods: {
-        finalizarTarefa (tempoDecorrido: number) : void {
-            const projeto = this.projetos.find((p) => p.id == this.idProjeto);
+    setup (props, { emit }) {
+        const store = useStore(key);
+        const descricao = ref('');
+        const idProjeto = ref('');
+        const projetos = computed(() => store.state.projeto.projetos);
+
+        const finalizarTarefa = (tempoDecorrido: number) : void => {
+            const projeto = projetos.value.find((p) => p.id == idProjeto.value);
             if (projeto) {
-                this.$emit('aoSalvarTarefa', {
+                emit('aoSalvarTarefa', {
                     duracaoEmSegundos: tempoDecorrido,
-                    descricao: this.descricao,
-                    projeto: this.projetos.find(proj => proj.id == this.idProjeto)
+                    descricao: descricao.value,
+                    projeto: projetos.value.find(proj => proj.id == idProjeto.value)
                 });
-                this.descricao = '';
+                descricao.value = '';
             } else {
-                this.store.commit(NOTIFICAR, {
+                store.commit(NOTIFICAR, {
                     titulo: 'Ops!',
                     texto: 'Selecione um projeto antes de finalizar a tarefa',
                     tipo: TipoNotificacao.FALHA,
                 });
             }
         }
-    },
-    setup () {
-        const store = useStore(key);
+
         return {
-            projetos: computed(() => store.state.projeto.projetos),
-            store
+            descricao,
+            idProjeto,
+            finalizarTarefa,
+            projetos
         }
     }
 })

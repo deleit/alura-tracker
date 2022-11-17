@@ -27,6 +27,15 @@
         "nome": "Alura Tracker"
       },
       "id": 2
+    },
+    {
+      "duracaoEmSegundos": 3,
+      "descricao": "Teste 2",
+      "projeto": {
+        "id": 1,
+        "nome": "Alura Tracker"
+      },
+      "id": 3
     }
   ]
 }
